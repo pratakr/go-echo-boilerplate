@@ -3,5 +3,5 @@ dev:
 run:
 	go run app/main.go
 
-genModel:
-	go run github.com/99designs/gqlgen generate
+gen:
+	go run ./genModel.go
