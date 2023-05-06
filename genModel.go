@@ -24,7 +24,7 @@ func main() {
 	dbhost := os.Getenv("DB_HOST_READER")
 	dbport := os.Getenv("DB_PORT")
 	dbname := os.Getenv("DB_NAME")
-	fmt.Print(dbuser)
+
 	conStr := fmt.Sprintf("%s:%s@(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", dbuser, dbpass, dbhost, dbport, dbname)
 
 	gormdb, _ := gorm.Open(mysql.Open(conStr))
