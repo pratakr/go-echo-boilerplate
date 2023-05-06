@@ -3,5 +3,6 @@ dev:
 run:
 	go run app/main.go
 
-gen:
+# Generate model from database
+gen: 
 	go run ./genModel.go
