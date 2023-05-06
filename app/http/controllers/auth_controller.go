@@ -4,7 +4,7 @@ import (
 	"errors"
 	"kancha-api/app/http/request"
 	"kancha-api/app/http/response"
-	"kancha-api/app/models"
+	"kancha-api/app/model"
 	"kancha-api/app/service"
 	"net/http"
 	"os"
@@ -15,10 +15,10 @@ import (
 )
 
 type jwtCustomClaims struct {
-	Id     uint   `json:"id"`
+	ID     int64  `json:"id"`
 	Email  string `json:"email"`
 	Name   string `json:"name"`
-	RoleId uint   `json:"role_id"`
+	RoleID int32  `json:"role_id"`
 	jwt.RegisteredClaims
 }
 
@@ -36,7 +36,7 @@ func (con *controller) Login(c echo.Context) error {
 		return loginFailed(c)
 	}
 
-	var user *models.User
+	var user *model.User
 	newService := service.NewService(con.Db)
 
 	user, err := newService.UserLogin(req.Email, req.Password)
@@ -48,10 +48,10 @@ func (con *controller) Login(c echo.Context) error {
 	token, err := con.CreateToken(*user)
 
 	userResponse := &response.UserResponse{
-		Id:     user.Id,
+		ID:     user.ID,
 		Name:   user.Name,
 		Email:  user.Email,
-		RoleId: user.RoleId,
+		RoleID: user.RoleID,
 		Token:  token,
 	}
 
@@ -76,15 +76,15 @@ func (con *controller) Profile(c echo.Context) error {
 	return c.JSON(http.StatusOK, claims)
 }
 
-func (con *controller) CreateToken(user models.User) (string, error) {
+func (con *controller) CreateToken(user model.User) (string, error) {
 
 	key := []byte(os.Getenv("JWT_SECRET_KEY"))
 
 	claims := &jwtCustomClaims{
-		user.Id,
+		user.ID,
 		user.Email,
 		user.Name,
-		user.RoleId,
+		user.RoleID,
 		jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 72)),
 		},

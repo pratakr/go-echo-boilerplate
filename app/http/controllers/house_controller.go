@@ -20,7 +20,7 @@ func (con *controller) GetHouses(c echo.Context) error {
 	var houseResponses []*response.HouseResponse
 	for _, house := range houses {
 		houseResponses = append(houseResponses, &response.HouseResponse{
-			Id:          house.Id,
+			ID:          house.ID,
 			Code:        house.Code,
 			Name:        house.Name,
 			Temperature: house.Temperature,
@@ -41,7 +41,7 @@ func (con *controller) GetHousebyId(c echo.Context) error {
 	}
 
 	houseResponse := &response.HouseResponse{
-		Id:          house.Id,
+		ID:          house.ID,
 		Code:        house.Code,
 		Name:        house.Name,
 		Temperature: house.Temperature,
