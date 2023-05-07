@@ -47,7 +47,7 @@ func (con *controller) Login(c echo.Context) error {
 
 	token, err := con.CreateToken(*user)
 
-	userResponse := &response.UserResponse{
+	userResponse := &response.AuthResponse{
 		ID:     user.ID,
 		Name:   user.Name,
 		Email:  user.Email,

@@ -2,14 +2,14 @@ package service
 
 import (
 	"errors"
-	"kancha-api/app/models"
+	"kancha-api/app/model"
 
 	"golang.org/x/crypto/bcrypt"
 )
 
-func (s *Service) FindUserByEmail(email string, appId int) (*models.User, error) {
-	var user *models.User
-	tx := s.Db.Model(&models.User{})
+func (s *Service) FindUserByEmail(email string, appId int) (*model.User, error) {
+	var user *model.User
+	tx := s.Db.Model(&model.User{})
 	tx = tx.Where("email=?", email)
 	if err := tx.First(&user).Error; err != nil {
 		return nil, err
@@ -18,9 +18,9 @@ func (s *Service) FindUserByEmail(email string, appId int) (*models.User, error)
 	return user, nil
 }
 
-func (s *Service) UserLogin(email string, password string) (*models.User, error) {
-	var user *models.User
-	tx := s.Db.Model(&models.User{})
+func (s *Service) UserLogin(email string, password string) (*model.User, error) {
+	var user *model.User
+	tx := s.Db.Model(&model.User{})
 	tx = tx.Where("email=?", email)
 	err := tx.First(&user).Error
 	if err != nil {
