@@ -24,7 +24,7 @@ type jwtCustomClaims struct {
 
 func loginFailed(c echo.Context) error {
 	errResponse := &response.ErrorResponse{
-		Error: "Failed Login",
+		Message: "Failed Login",
 	}
 	return c.JSON(http.StatusForbidden, errResponse)
 }

@@ -30,6 +30,9 @@ func DefineRouteAPI(e *echo.Echo, logger *zap.Logger) {
 	// v1
 	v1 := api.Group("/v1")
 	v1.GET("/user/profile", controller.Profile)
+	v1.POST("/user", controller.CreateUser)
+	v1.PUT("/user/:id", controller.UpdateUser)
+	v1.DELETE("/user/:id", controller.DeleteUser)
 
 	v1.GET("/houses", controller.GetHouses) // ดึงข้อมูลบ้านทั้งหมด
 	v1.GET("/house/:id", controller.GetHousebyId)

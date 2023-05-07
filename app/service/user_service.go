@@ -20,13 +20,20 @@ func (s *Service) UpdateUser(user *model.User) (*model.User, error) {
 	return user, nil
 }
 
-func (s *Service) DeleteUser(id int32) error {
+func (s *Service) DeleteUser(id int64) error {
 	tx := s.Db.Model(&model.User{})
 	err := tx.Where("id=?", id).Delete(&model.User{}).Error
 	if err != nil {
 		return err
 	}
 	return nil
+}
+
+func (s *Service) ExistUser(user *model.User) bool {
+	tx := s.Db.Model(&model.User{})
+	var count int64
+	tx.Where("email=?", user.Email).Count(&count)
+	return count > 0
 }
 
 func (s *Service) FindUsers() ([]*model.User, error) {
