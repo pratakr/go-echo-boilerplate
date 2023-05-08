@@ -13,7 +13,7 @@ func (s *Service) CreateUser(user *model.User) (*model.User, error) {
 
 func (s *Service) UpdateUser(user *model.User) (*model.User, error) {
 	tx := s.Db.Model(&model.User{})
-	err := tx.Where("id=?", user.ID).Updates(&user).Error
+	err := tx.Debug().Where("id=?", user.ID).Updates(&user).Error
 	if err != nil {
 		return nil, err
 	}
@@ -44,4 +44,14 @@ func (s *Service) FindUsers() ([]*model.User, error) {
 		return nil, err
 	}
 	return users, nil
+}
+
+func (s *Service) FindUserByID(id int64) (*model.User, error) {
+	var user model.User
+	tx := s.Db.Model(&model.User{})
+	err := tx.Where("id=?", id).First(&user).Error
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
 }
