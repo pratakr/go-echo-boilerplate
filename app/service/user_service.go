@@ -1,6 +1,9 @@
 package service
 
-import "kancha-api/app/model"
+import (
+	"kancha-api/app/model"
+	"kancha-api/app/utils"
+)
 
 func (s *Service) CreateUser(user *model.User) (*model.User, error) {
 	tx := s.Db.Model(&model.User{})
@@ -44,6 +47,17 @@ func (s *Service) FindUsers() ([]*model.User, error) {
 		return nil, err
 	}
 	return users, nil
+}
+
+func (s *Service) FindUsersPaginate(pagination *utils.Pagination) (*utils.Pagination, error) {
+	var users []*model.User
+	tx := s.Db.Model(&model.User{})
+	err := tx.Scopes(paginate(pagination, tx)).Find(&users).Error
+	if err != nil {
+		return nil, err
+	}
+	pagination.Data = users
+	return pagination, nil
 }
 
 func (s *Service) FindUserByID(id int64) (*model.User, error) {

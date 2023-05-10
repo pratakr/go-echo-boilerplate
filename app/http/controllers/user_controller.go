@@ -6,6 +6,7 @@ import (
 	"kancha-api/app/http/response"
 	"kancha-api/app/model"
 	"kancha-api/app/service"
+	"kancha-api/app/utils"
 	"net/http"
 	"strconv"
 
@@ -104,4 +105,18 @@ func (con *controller) DeleteUser(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, response.ErrorResponse{Message: "success"})
+}
+
+func (con *controller) FindUsersPaginate(c echo.Context) error {
+	pagination := utils.NewPagination(c)
+
+	newService := service.NewService(con.Db)
+
+	pagination, err := newService.FindUsersPaginate(pagination)
+	if err != nil {
+		con.Logger.Error(err.Error())
+		return c.JSON(http.StatusInternalServerError, response.ErrorResponse{Message: err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, pagination)
 }
